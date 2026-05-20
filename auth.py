@@ -4,7 +4,8 @@ from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 
-SECRET_KEY = "monicore_secret_key"
+import os
+SECRET_KEY = os.getenv("SECRET_KEY", "monicore_secret_key")
 ALGORITHM = "HS256"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
