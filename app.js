@@ -602,7 +602,8 @@ async function viewConcernDetail(id) {
         ${c.photo_url ? `
         <div class="detail-row" style="flex-direction:column;gap:8px">
           <span class="detail-label">Attached Photo</span>
-          <img src="http://127.0.0.1:8000/${c.photo_url}"
+          <img src="${c.photo_url}"
+            onclick="window.open('${c.photo_url}','_blank')">
             style="max-width:100%;max-height:220px;border-radius:8px;object-fit:cover;border:1px solid var(--border);cursor:pointer"
             onclick="window.open('http://127.0.0.1:8000/${c.photo_url}','_blank')">
         </div>` : ''}
