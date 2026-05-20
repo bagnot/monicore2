@@ -2,7 +2,7 @@
 // ═══════════════════════════════
 //  API CONFIG
 // ═══════════════════════════════
-const API_URL = "https://monicore-w2pf.onrender.com";
+const API_URL = "https://monicore1.onrender.com";
 
 function getToken() {
   return localStorage.getItem("token");
