@@ -39,6 +39,10 @@ app.include_router(announcements.router)
 def home():
     return {"message": "MONICORE API running"}
 
+@app.get("/debug-routes")
+def debug_routes():
+    return [{"path": route.path, "methods": list(route.methods)} for route in app.routes]
+
 @app.get("/setup")
 def setup():
     from database import SessionLocal
