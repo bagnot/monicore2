@@ -1,4 +1,7 @@
 
+// ═══════════════════════════════
+//  API CONFIG
+// ═══════════════════════════════
 const API_URL = "https://monicore-w2pf.onrender.com";
 
 function getToken() {
@@ -16,40 +19,10 @@ async function apiFetch(endpoint, method = "GET", body = null, isFormData = fals
   return await res.json();
 }
 
-
-//  DATA STORE═══ // 
 let currentUser = null;
 
-const users = [
-  { id: 1, name: 'Resident User', email: 'resident@newtown.com', password: 'password', role: 'resident', unit: 'Unit 3A', cluster: 'Tower 1', status: 'active' },
-  { id: 2, name: 'Admin User', email: 'admin@newtown.com', password: 'password', role: 'admin', unit: 'Office', cluster: 'All', status: 'active' },
-  { id: 3, name: 'Super Admin', email: 'super@newtown.com', password: 'password', role: 'superadmin', unit: 'Management', cluster: 'All', status: 'active' },
-  { id: 4, name: 'Maria Santos', email: 'maria@newtown.com', password: 'password', role: 'resident', unit: 'Unit 1B', cluster: 'Tower 1', status: 'active' },
-  { id: 5, name: 'Jose Reyes', email: 'jose@newtown.com', password: 'password', role: 'resident', unit: 'Unit 2C', cluster: 'Tower 2', status: 'active' },
-  { id: 6, name: 'Ana Cruz', email: 'ana@newtown.com', password: 'password', role: 'resident', unit: 'Unit 4D', cluster: 'Tower 2', status: 'active' },
-  { id: 7, name: 'Carlos Tan', email: 'carlos@newtown.com', password: 'password', role: 'resident', unit: 'Unit 5A', cluster: 'Tower 3', status: 'inactive' },
-  { id: 8, name: 'Elena Lim', email: 'elena@newtown.com', password: 'password', role: 'admin', unit: 'Office', cluster: 'All', status: 'active' },
-];
-
-let concerns = [
-  { id: 'C-001', type: 'Plumbing', title: 'Leaking pipe in unit bathroom', description: 'There is a persistent leak under the sink in Unit 3A bathroom. Water is pooling on the floor.', unit: 'Unit 3A', cluster: 'Tower 1', status: 'resolved', submittedBy: 1, submittedAt: '2024-05-01', updatedAt: '2024-05-03', remarks: 'Pipe replaced by maintenance team.' },
-  { id: 'C-002', type: 'Electrical', title: 'Flickering lights in hallway', description: 'The corridor lights on Floor 3 have been flickering since Tuesday.', unit: 'Floor 3', cluster: 'Tower 2', status: 'ongoing', submittedBy: 4, submittedAt: '2024-05-05', updatedAt: '2024-05-06', remarks: 'Electrician scheduled for inspection.' },
-  { id: 'C-003', type: 'Noise Complaint', title: 'Loud music after 10 PM', description: 'Unit 2B plays loud music regularly past 10 PM disturbing neighbors.', unit: 'Unit 3A', cluster: 'Tower 1', status: 'pending', submittedBy: 1, submittedAt: '2024-05-07', updatedAt: '2024-05-07', remarks: '' },
-  { id: 'C-004', type: 'Elevator', title: 'Elevator door not closing properly', description: 'Elevator 2 door takes very long to close and sometimes reopens.', unit: 'Building B', cluster: 'Tower 3', status: 'ongoing', submittedBy: 5, submittedAt: '2024-05-06', updatedAt: '2024-05-08', remarks: 'Technician alerted.' },
-  { id: 'C-005', type: 'Security', title: 'Broken CCTV near parking', description: 'CCTV camera #4 near the parking entrance appears to be offline.', unit: 'Parking', cluster: 'Tower 2', status: 'pending', submittedBy: 6, submittedAt: '2024-05-08', updatedAt: '2024-05-08', remarks: '' },
-  { id: 'C-006', type: 'Cleanliness', title: 'Garbage not collected on time', description: 'Garbage bins on Floor 2 have been overflowing since Monday.', unit: 'Floor 2', cluster: 'Tower 1', status: 'resolved', submittedBy: 4, submittedAt: '2024-05-03', updatedAt: '2024-05-04', remarks: 'Housekeeping team notified and resolved.' },
-  { id: 'C-007', type: 'Plumbing', title: 'No hot water in unit 2C', description: 'Hot water has not been working in my unit for 3 days.', unit: 'Unit 2C', cluster: 'Tower 2', status: 'rejected', submittedBy: 5, submittedAt: '2024-05-02', updatedAt: '2024-05-05', remarks: 'Issue determined to be unit-owner responsibility.' },
-];
-
-let nextConcernNum = 8;
-
 const concernTypes = ['Plumbing', 'Electrical', 'Noise Complaint', 'Elevator', 'Security', 'Cleanliness', 'Structural', 'Internet/Cable', 'Pest Control', 'Other'];
-const towers = [
-  'Tower 1',
-  'Tower 2',
-  'Tower 3',
-  'Tower 4'
-];
+
 const roles = ['resident', 'admin', 'superadmin'];
 
 const clusterLabel = { 
@@ -58,7 +31,7 @@ const clusterLabel = {
 };
 function towerName(name) { return clusterLabel[name] || name; }
 
-// ══NAV CONFIG ---//
+
 const navConfig = {
   resident: [
     { label: 'My Concerns', section: 'Main', icon: iconList, page: 'resident-track' },
@@ -594,10 +567,9 @@ async function viewConcernDetail(id) {
         ${c.photo_url ? `
         <div class="detail-row" style="flex-direction:column;gap:8px">
           <span class="detail-label">Attached Photo</span>
-          <img src="${c.photo_url}"
-            onclick="window.open('${c.photo_url}','_blank')">
-            style="max-width:100%;max-height:220px;border-radius:8px;object-fit:cover;border:1px solid var(--border);cursor:pointer"
-            onclick="window.open('http://127.0.0.1:8000/${c.photo_url}','_blank')">
+          <img src="https://monicore-w2pf.onrender.com/${c.photo_url}"
+               style="max-width:100%;max-height:220px;border-radius:8px;object-fit:cover;border:1px solid var(--border);cursor:pointer"
+               onclick="window.open('https://monicore-w2pf.onrender.com/${c.photo_url}','_blank')">
         </div>` : ''}
       </div>
       ${adminActions}
@@ -1478,6 +1450,21 @@ async function renderAnnouncements() {
 
   } catch (err) {
     toast('Failed to load announcements', 'error');
+  }
+}
+// Step 1.1: Add this function to the bottom of app.js
+async function deleteUserApi(id) {
+  if (!confirm(`Are you sure you want to delete user #${id}? This action cannot be undone.`)) return;
+  try {
+    const data = await apiFetch(`/users/${id}`, 'DELETE');
+    if (data.message) {
+      toast(`User #${id} successfully deleted`, 'info');
+      renderUserManagement(); // Automatically refreshes the UI list view
+    } else {
+      toast(data.detail || 'Failed to delete user', 'error');
+    }
+  } catch (err) {
+    toast('Connection error', 'error');
   }
 }
 
