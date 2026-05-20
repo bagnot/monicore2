@@ -1,7 +1,4 @@
 
-// ═══════════════════════════════
-//  API CONFIG
-// ═══════════════════════════════
 const API_URL = "https://monicore-w2pf.onrender.com";
 
 function getToken() {
@@ -20,10 +17,7 @@ async function apiFetch(endpoint, method = "GET", body = null, isFormData = fals
 }
 
 
-
-// ═══════════════════════════════
-//  DATA STORE
-// ═══════════════════════════════
+//  DATA STORE═══ // 
 let currentUser = null;
 
 const users = [
@@ -64,9 +58,7 @@ const clusterLabel = {
 };
 function towerName(name) { return clusterLabel[name] || name; }
 
-// ═══════════════════════════════
-//  NAV CONFIG
-// ═══════════════════════════════
+// ══NAV CONFIG ---//
 const navConfig = {
   resident: [
     { label: 'My Concerns', section: 'Main', icon: iconList, page: 'resident-track' },
@@ -744,12 +736,14 @@ async function renderAdminConcerns(filterStatus='', search='') {
         <td>
           <div style="display:flex;gap:6px">
             <button class="btn btn-ghost btn-sm" onclick="viewConcernDetail(${c.id})">Manage</button>
+            <button class="btn btn-sm" onclick="deleteConcernApi(${c.id})" style="background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px">Delete</button>
           </div>
         </td>
       </tr>`;}).join('')
       : `<tr><td colspan="9"><div class="empty-state"><div class="e-icon">•</div><div class="e-title">No concerns found</div></td></tr>`;
     setPage('Manage Concerns', `${allConcerns.length} concern${allConcerns.length !== 1 ? 's' : ''}`,
-      `<button class="btn btn-blue" onclick="exportCSV()">Export CSV</button>`,
+      `<button class="btn btn-ghost" onclick="clearResolvedConcerns()" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">🗑 Clear Resolved</button>
+       <button class="btn btn-blue" onclick="exportCSV()">Export CSV</button>`,
       `<div class="card">
         <div class="card-header">
           <div><div class="card-title">All Concerns</div></div>
@@ -773,11 +767,34 @@ async function renderAdminConcerns(filterStatus='', search='') {
     toast('Failed to load concerns', 'error');
   }
 }
-function deleteConcern(id) {
-  if (!confirm(`Delete concern ${id}? This cannot be undone.`)) return;
-  concerns = concerns.filter(c => c.id !== id);
-  toast(`Concern ${id} deleted`, 'info');
-  navigate(currentPage);
+async function deleteConcernApi(id) {
+  if (!confirm(`Delete concern #${id}? This cannot be undone.`)) return;
+  try {
+    const data = await apiFetch(`/concerns/${id}`, 'DELETE');
+    if (data.message) {
+      toast(`Concern #${id} deleted`, 'info');
+      renderAdminConcerns();
+    } else {
+      toast(data.detail || 'Failed to delete concern', 'error');
+    }
+  } catch (err) {
+    toast('Connection error', 'error');
+  }
+}
+
+async function clearResolvedConcerns() {
+  if (!confirm('Delete ALL resolved concerns? This cannot be undone.')) return;
+  try {
+    const data = await apiFetch('/concerns/resolved/all', 'DELETE');
+    if (data.message) {
+      toast(data.message, 'success');
+      renderAdminConcerns();
+    } else {
+      toast(data.detail || 'Failed to clear resolved concerns', 'error');
+    }
+  } catch (err) {
+    toast('Connection error', 'error');
+  }
 }
 
 async function exportCSV() {
