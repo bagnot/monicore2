@@ -263,3 +263,24 @@ def setup(db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     return {"message": "Superadmin created successfully"}
+
+@router.delete("/users/{user_id}")
+def delete_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user_id: int = Depends(verify_token)
+):
+    current_user = db.query(User).filter(User.id == current_user_id).first()
+    if current_user.role != "superadmin":
+        raise HTTPException(status_code=403, detail="Only superadmin can delete users")
+    
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if user.id == current_user_id:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+    
+    db.delete(user)
+    db.commit()
+    return {"message": f"User {user.name} deleted successfully"}
