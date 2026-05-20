@@ -48,7 +48,13 @@ def setup():
     existing = db.query(User).filter(User.email == "super@newtown.com").first()
     if existing:
         return {"message": "Already exists"}
-    u = User(name="Super Admin", email="super@newtown.com", password=hash_password("Newtown@123"), role="superadmin", unit_id=None)
+    u = User(
+        name="Super Admin",
+        email="super@newtown.com",
+        password=hash_password("Newtown@123"),
+        role="superadmin",
+        unit_id=None
+    )
     db.add(u)
     db.commit()
     return {"message": "Done!"}
