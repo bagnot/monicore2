@@ -16,7 +16,13 @@ async function apiFetch(endpoint, method = "GET", body = null, isFormData = fals
   if (body) options.body = isFormData ? body : JSON.stringify(body);
 
   const res = await fetch(API_URL + endpoint, options);
-  return await res.json();
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.detail || `Request failed with status ${res.status}`);
+  }
+
+  return data;
 }
 
 let currentUser = null;
@@ -739,18 +745,15 @@ async function renderAdminConcerns(filterStatus='', search='') {
     toast('Failed to load concerns', 'error');
   }
 }
+
 async function deleteConcernApi(id) {
   if (!confirm(`Delete concern #${id}? This cannot be undone.`)) return;
   try {
     const data = await apiFetch(`/concerns/${id}`, 'DELETE');
-    if (data.message) {
-      toast(`Concern #${id} deleted`, 'info');
-      renderAdminConcerns();
-    } else {
-      toast(data.detail || 'Failed to delete concern', 'error');
-    }
+    toast(`Concern #${id} deleted`, 'info');
+    renderAdminConcerns();
   } catch (err) {
-    toast('Connection error', 'error');
+    toast(err.message || 'Failed to delete concern', 'error');
   }
 }
 
