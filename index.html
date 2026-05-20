@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MONICORE — Concern Monitoring System</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     LOGIN PAGE
+════════════════════════════════════════ -->
+<div id="login-page">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-icon">M</div>
+      <div>
+        <div class="brand-name">MONICORE</div>
+        <div class="brand-sub">8 Newtown Blvd</div>
+      </div>
+    </div>
+    <div class="login-title">Welcome back</div>
+    <div class="login-sub">Sign in to your account to continue.</div>
+
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" id="login-email" type="email" placeholder="you@newtown.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" id="login-pw" type="password" placeholder="••••••••">
+    </div>
+    
+    <button class="btn-primary" onclick="doLogin()">Sign In</button>
+    <div style="text-align:center;margin-top:14px">
+      <span onclick="showForgotPassword()" style="font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;text-decoration:underline">Forgot Password?</span>
+    </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     APP
+════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon">M</div>
+      <span class="sidebar-brand-text">MONICORE</span>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">A</div>
+      <div>
+        <div class="user-info-name" id="sidebar-name">Admin User</div>
+        <div class="user-info-role" id="sidebar-role">Admin</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+
+    <div class="sidebar-footer">
+      <div class="nav-item" onclick="logout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Sign Out
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="topbar-title">Dashboard</div>
+        <div class="page-sub" id="topbar-sub">8 Newtown Blvd Condominium</div>
+      </div>
+      <div class="topbar-right" id="topbar-right"></div>
+    </div>
+
+    <div class="content-area" id="content-area">
+      <!-- pages rendered here -->
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-box">
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
