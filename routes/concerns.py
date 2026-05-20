@@ -155,3 +155,35 @@ def update_concern(
     db.commit()
     db.refresh(concern)
     return format_concern(concern, db, include_priority=True)
+
+@router.delete("/concerns/{concern_id}")
+def delete_concern(
+    concern_id: int,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(verify_token)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if user.role not in ["admin", "superadmin"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    concern = db.query(Concern).filter(Concern.id == concern_id).first()
+    if not concern:
+        raise HTTPException(status_code=404, detail="Concern not found")
+    db.delete(concern)
+    db.commit()
+    return {"message": "Concern deleted successfully"}
+
+
+@router.delete("/concerns/resolved/all")
+def delete_resolved_concerns(
+    db: Session = Depends(get_db),
+    user_id: int = Depends(verify_token)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if user.role not in ["admin", "superadmin"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+    resolved = db.query(Concern).filter(Concern.status == "resolved").all()
+    count = len(resolved)
+    for concern in resolved:
+        db.delete(concern)
+    db.commit()
+    return {"message": f"{count} resolved concern(s) deleted"}
