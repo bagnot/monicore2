@@ -573,9 +573,9 @@ async function viewConcernDetail(id) {
         ${c.photo_url ? `
         <div class="detail-row" style="flex-direction:column;gap:8px">
           <span class="detail-label">Attached Photo</span>
-          <img src="https://monicore-w2pf.onrender.com/${c.photo_url}"
-               style="max-width:100%;max-height:220px;border-radius:8px;object-fit:cover;border:1px solid var(--border);cursor:pointer"
-               onclick="window.open('https://monicore-w2pf.onrender.com/${c.photo_url}','_blank')">
+          <img src="${c.photo_url}"
+              style="max-width:100%;max-height:220px;border-radius:8px;object-fit:cover;border:1px solid var(--border);cursor:pointer"
+              onclick="window.open('${c.photo_url}','_blank')">
         </div>` : ''}
       </div>
       ${adminActions}
